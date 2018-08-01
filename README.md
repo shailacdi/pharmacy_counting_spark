@@ -33,7 +33,7 @@ Files required:
 
 The following command is initiated to accomplish the above.
 <br>
-python ./src/pharma_env.py <input data file> <HDFS input data folder> <HDFS output data folder> ./src/pharma_counting_spark.py
+python ./src/pharma_env.py input_data_file HDFS_input_data_folder HDFS_output_data_folder ./src/pharma_counting_spark.py
 
 # Design
 
