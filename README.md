@@ -22,7 +22,7 @@ Format of the output file: Uncompressed parquet. Sorted by total drug cost (desc
 
 # Solution 
 
-    Several alternatives were tried out and the solution was implemented using a cluster computing framework - Spark/HDFS
+Several alternatives were tried out and the solution was implemented using a cluster computing framework - Spark/HDFS
 Programming Language chosen is Python. A series of transformations and actions on the Resilient Distributed Dataset yielded the 
 desired output.
 Files required:
