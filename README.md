@@ -32,6 +32,7 @@ Files required:
 2. A spark driver program (in python) to analyze the input data file and produce results
 
 The following command is initiated to accomplish the above.
+<br>
 python ./src/pharma_env.py <input data file> <HDFS input data folder> <HDFS output data folder> ./src/pharma_counting_spark.py
 
 # Design
