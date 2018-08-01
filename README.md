@@ -11,14 +11,14 @@ It provides information on prescription drugs prescribed by individual physician
 The dataset identifies prescribers by their ID, last name, and first name. It also describes the specific prescriptions 
 that were dispensed at their direction, listed by drug name and the cost of the medication
 Format of the data file:
-	id,prescriber_last_name,prescriber_first_name,drug_name,drug_cost
+<br><t>	id,prescriber_last_name,prescriber_first_name,drug_name,drug_cost
 
 The above input file needs to be analyzed and processed to produce the following results:
  1. the number of unique prescribers who prescribed the drug. 
  2. total cost of the drug across all prescribers
 
 Format of the output file: Uncompressed parquet. Sorted by total drug cost (descending), in case of a tie, sorted by drug_name
-	Output fields : drug_name,  num_prescriber, total_cost
+<br><t>Output fields : drug_name,  num_prescriber, total_cost
 
 # Solution 
 
