@@ -10,15 +10,17 @@ The dataset is obtained from the Centers for Medicare & Medicaid Services and cl
 It provides information on prescription drugs prescribed by individual physicians and other health care providers. 
 The dataset identifies prescribers by their ID, last name, and first name. It also describes the specific prescriptions 
 that were dispensed at their direction, listed by drug name and the cost of the medication
-Format of the data file:
-<br><t>	id,prescriber_last_name,prescriber_first_name,drug_name,drug_cost
+
+<br>Format of the data file:
+<br><t>   	id,prescriber_last_name,prescriber_first_name,drug_name,drug_cost
 
 The above input file needs to be analyzed and processed to produce the following results:
  1. the number of unique prescribers who prescribed the drug. 
  2. total cost of the drug across all prescribers
 
-Format of the output file: Uncompressed parquet. Sorted by total drug cost (descending), in case of a tie, sorted by drug_name
-<br><t>Output fields : drug_name,  num_prescriber, total_cost
+Format of the output file: Uncompressed parquet. 
+Sorted by total drug cost (descending), in case of a tie, sorted by drug_name
+<br><t>  Output fields : drug_name,  num_prescriber, total_cost
 
 # Solution 
 
@@ -36,17 +38,17 @@ python ./src/pharma_env.py <input data file> <HDFS input data folder> <HDFS outp
 
  The following are the high level steps to accomplish the results: 
 <br>   1. Load the input data file into HDFS using 'hdfs fs put'.
-<br>   2. Run a series of transformations as follows
-<br><t>		a. filter : strip off the header
-<br><t>		b. map : process line by line retrieving relevant fields - (drug_name, ("last_name,first_name", drug_cost)) 
-<br><t>		c. aggregateByKey : consolidate drug_costs and maintain a set of unique prescribers for each drug 
-<br><t>		d. map : to enable sorting  - (k,v) = ((-drug_cost, drug_name), (drug_name, size of the prescribers set))
-<br><t>		e. sortByKey : sort by drug_cost desc, and drug_name asc
-<br><t>		f. map : discard the key, and retain just the value (drug_name, size of the prescribers set)
-<br>	3. Generate output file
-<br><t>		a. convert RDD to a DataFrame with the schema ["drug_name","num_prescriber","total_cost"]
-<br><t>		b. set to "uncompressed" mode using sqlContext
-<br><t>		c. save the DF as a parquet file
+<br>   2. Run a series of transformations and actions as follows
+<ul> 		a. filter : strip off the header </ul>
+<ul>	  b. map : process line by line retrieving relevant fields - (drug_name, ("last_name,first_name", drug_cost)) </ul>
+<ul>  	c. aggregateByKey : consolidate drug_costs and maintain a set of unique prescribers for each drug </ul>
+<ul>		  d. map : to enable sorting  - (k,v) = ((-drug_cost, drug_name), (drug_name, size of the prescribers set))</ul>
+<ul>		  e. sortByKey : sort by drug_cost desc, and drug_name asc</ul>
+<ul>		  f. map : discard the key, and retain just the value (drug_name, size of the prescribers set)</ul>
+<br>	  3. Generate output file
+<ul>  		a. convert RDD to a DataFrame with the schema ["drug_name","num_prescriber","total_cost"] </ul>
+<ul>		  b. set to "uncompressed" mode using sqlContext</ul>
+<ul>		  c. save the DF as a parquet file</ul>
 
 
 # Assumptions and Dependencies
@@ -54,8 +56,5 @@ python ./src/pharma_env.py <input data file> <HDFS input data folder> <HDFS outp
     <br>pyspark
     <br>sys
     <br>re
-    The input file is cleansed and validated as a pre-requisite. Individual field validations aren't necessary.
+2. The input file is cleansed and validated as a pre-requisite. Individual field validations aren't necessary.
     
-
-2. Write and Delete permissions on input folder is required since the program creates part files. After writing the output, the program does a clean up by removing the part files. Part files are created in the same directory where the source file exists.  
-
